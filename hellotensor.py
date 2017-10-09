@@ -1,4 +1,7 @@
-# Basic imports 
+# Getting the hang of tensorflow
+# Source: https://www.tensorflow.org/get_started/get_started
+
+# Basic imports
 
 import numpy as np
 import tensorflow as tf
@@ -34,3 +37,13 @@ node3 = tf.add(node1, node2)
 print("node3:", node3)
 print("sess.run(node3):", sess.run(node3))
 
+# Abstact into placeholders
+# "A placeholder is a promise to private a value later"
+
+a = tf.placeholder(tf.float32)
+b = tf.placeholder(tf.float32)
+adder_node = a + b
+# + provides a shortcut for tf.add(a,b)
+
+print(sess.run(adder_node, {a:3, b:4.5}))
+print(sess.run(adder_node, {a: [1, 3], b: [2,4]}))
