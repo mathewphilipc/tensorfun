@@ -74,3 +74,12 @@ y = tf.placeholder(tf.float32)
 squared_deltas = tf.square(linear_model - y)
 loss = tf.reduce_sum(squared_deltas)
 print(sess.run(loss, {x: [1, 2, 3, 4], y: [0, -1, -2, -3]}))
+
+# On inspection, the ideal parameters are W = -1 and b = 1
+# A variable is initialized to the value provided to tf.Variable but can be changed using
+# operations like tf.assign.
+
+fixW = tf.assign(W, [-1.])
+fixb = tf.assign(b, [1.])
+sess.run([fixW, fixb])
+print(sess.run(loss, {x: [1, 2, 3, 4], y: [0, -1, -2, -3]}))
