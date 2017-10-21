@@ -1,8 +1,9 @@
 import tensorflow as tf
 import os
 import numpy as np
+import decimal
 
-BIG_NUMBER = 1000
+BIG_NUMBER = 20000
 
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
@@ -55,11 +56,21 @@ x_image = tf.reshape(x, [-1, 28, 28, 1])
 h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
 h_pool1 = max_pool_2x2(h_conv1)
 
+
+
+
+# Second convolutional layer
+# This has 64 features for each 5x5 patch
 W_conv2 = weight_variable([5, 5, 32, 64])
 b_conv2 = bias_variable([64])
 
 h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
 h_pool2 = max_pool_2x2(h_conv2)
+
+
+
+
+# Densely connected layer
 
 W_fc1 = weight_variable([7 * 7 * 64, 1024])
 b_fc1 = bias_variable([1024])
@@ -67,6 +78,11 @@ b_fc1 = bias_variable([1024])
 h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
 h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
+
+
+
+# To reduce overfitting, we apply dropout before the readout layer
+# More info @ https://www.cs.toronto.edu/~hinton/absps/JMLRdropout.pdf
 keep_prob = tf.placeholder(tf.float32)
 h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 
@@ -80,6 +96,17 @@ train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
+
+
+
+
+# We use tf.Session instead of tf.InteractiveSession
+# This better separates the process of creating the graph (model specification)
+# from the process of evaluating the graph (model fitting)
+# We replace the steepest gradient descent optimizer with the ADAM optimizer
+# We include the additional param keep_prob in feed_dict to control dropout rate
+# We add periodic logging during training
+
 with tf.Session() as sess:
 	sess.run(tf.global_variables_initializer())
 	for i in range(BIG_NUMBER):
@@ -87,7 +114,7 @@ with tf.Session() as sess:
 		if i % 10 == 0:
 			train_accuracy = accuracy.eval(feed_dict={
 				x: batch[0], y_: batch[1], keep_prob: 1.0})
-			print('step %d, training accuracy %g' % (i, train_accuracy))
+			print('step %d, training accuracy %f%%' % (i, train_accuracy*100.0))
 		train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
 	print('test accuracy %g' % accuracy.eval(feed_dict={
