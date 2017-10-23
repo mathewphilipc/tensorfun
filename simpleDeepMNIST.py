@@ -80,4 +80,4 @@ def matrix_feed_forward_calc(n_layers, x, w, b):
 newX = x;
 newW = [w1, w1, w2]
 newB = [b1, b1, b2]
-# print matrix_feed_forward_calc(4, newX, newW, newB)
+print matrix_feed_forward_calc(4, newX, newW, newB)
