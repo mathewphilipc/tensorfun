@@ -80,4 +80,20 @@ def matrix_feed_forward_calc(n_layers, x, w, b):
 newX = x;
 newW = [w1, w1, w2]
 newB = [b1, b1, b2]
-print matrix_feed_forward_calc(4, newX, newW, newB)
+# print matrix_feed_forward_calc(4, newX, newW, newB)
+
+# Simple gradient descent
+x_old = 0
+x_new = .1;
+gamma = 0.01 # step size
+precision = 0.0000001
+def df(x):
+	y = 4 * x**3 - 9 * x**2
+	return y
+
+while abs(x_new - x_old) > precision:
+	x_old = x_new
+	x_new -= df(x_old) * gamma
+	print("x_guess -> %f" % x_new)
+
+print("The local minimum occurs at %f" % x_new)
