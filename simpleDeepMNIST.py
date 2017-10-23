@@ -97,3 +97,7 @@ while abs(x_new - x_old) > precision:
 	print("x_guess -> %f" % x_new)
 
 print("The local minimum occurs at %f" % x_new)
+
+from sklearn.datasets import load_digits
+digits = loads_digits()
+print(digits.data.shape)
