@@ -44,4 +44,27 @@ def main():
 		n_classes=3,
 		model_dir="/tmp/iris_model")
 
+	# Define the training inputs
+	train_input_fn = tf.estimator.inputs.numpy_input_fn(
+		x={"x": np.array(training_set.data)},
+		y=np.array(training_set.target),
+		num_epochs=None,
+		shuffle=True)
+
+	# Train model
+	classifier.train(input_fn=train_input_fn, steps=2)
+
+	# Define the test inputs
+	test_input_fn = tf.estimator.inputs.numpy_input_fn(
+		x={"x": np.array(test_set.data)},
+		y=np.array(test_set.target),
+		num_epochs=1,
+		shuffle=False)
+
+	# Evaluate accuracy
+	accuracy_score = classifier.evaluate(input_fn=test_input_fn)["accuracy"]
+	print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
+
+if __name__ == "__main__":
+	main()
 print('hello world')
