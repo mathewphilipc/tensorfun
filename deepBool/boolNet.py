@@ -38,9 +38,10 @@ def main():
 	features_dtype=np.float32)
 	print("...\nTest data imported successfully")
 
-	# Each data point has four real-valued input variables
+	# Each data point has seven real-valued input variables
+	# Rule to learn: (x1,...x7) -> (x1 XOR x2) && x3
 
-	feature_columns = [tf.feature_column.numeric_column("x", shape=[4])]
+	feature_columns = [tf.feature_column.numeric_column("x", shape=[7])]
 	print("...\nDefined feature columns")
 
 	# Build 3 layer DNN with [10,20,10] units respectively
@@ -48,7 +49,7 @@ def main():
 	classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
 		hidden_units=[10,5],
 		n_classes=2,
-		model_dir="/home/mathew/Desktop/CNAM/TensorFun/bool_model")
+		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deepBool/bool_model")
 
 	# Note that model_dir is persistent after training
 	# In order to re-run training with, e.g., different hidden unit numbers,
@@ -71,7 +72,7 @@ def main():
 
 	#Train mode
 
-	steps=1000
+	steps=1
 
 	classifier.train(input_fn=train_input_fn, steps=steps)
 
