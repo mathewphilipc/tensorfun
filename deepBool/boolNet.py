@@ -48,7 +48,7 @@ def main():
 	classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
 		hidden_units=[10,5],
 		n_classes=2,
-		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deepBool/bool_model")
+		model_dir="/home/mathew/Desktop/CNAM/TensorFun/bool_model")
 
 	# Note that model_dir is persistent after training
 	# In order to re-run training with, e.g., different hidden unit numbers,
@@ -94,15 +94,15 @@ def main():
 	print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 	# Define new samples to evaluate
-	new_samples = np.array([[1,0,0,1],[0,0,1,0]], dtype=np.float32)
-	predict_input_fn = tf.estimator.inputs.numpy_input_fn(
-		x={"x":new_samples},
-		num_epochs=1,
-		shuffle=False)
-	predictions = list(classifier.predict(input_fn=predict_input_fn))
-	predicted_classes = [p["classes"] for p in predictions]
-	print("New Samples, Class Predictions: {}\n".format(predicted_classes[0]))
-	print("New Samples, Class Predictions: {}\n".format(predicted_classes[1]))
+	#new_samples = np.array([[1,0,0,1],[0,0,1,0]], dtype=np.float32)
+	#predict_input_fn = tf.estimator.inputs.numpy_input_fn(
+	#	x={"x":new_samples},
+	#	num_epochs=1,
+	#	shuffle=False)
+	#predictions = list(classifier.predict(input_fn=predict_input_fn))
+	#predicted_classes = [p["classes"] for p in predictions]
+	#print("New Samples, Class Predictions: {}\n".format(predicted_classes[0]))
+	#print("New Samples, Class Predictions: {}\n".format(predicted_classes[1]))
 
 
 
