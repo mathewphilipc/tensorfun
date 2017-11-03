@@ -2,11 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+
 import os
 from six.moves.urllib.request import urlopen
 
 import numpy as np
 import tensorflow as tf
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 # Data sets
 IRIS_TRAINING = "iris_training.csv"
@@ -58,7 +60,7 @@ def main():
   # data set (sepal width, sepal height, petal width, and petal height), so accordingly shape must be set to [4] to hold all the data.
 
   # Train model.
-  classifier.train(input_fn=train_input_fn, steps=10000)
+  classifier.train(input_fn=train_input_fn, steps=1000)
 
   # Define the test inputs
   test_input_fn = tf.estimator.inputs.numpy_input_fn(
