@@ -51,6 +51,11 @@ def main():
       y=np.array(training_set.target),
       num_epochs=None,
       shuffle=True)
+  # The code above first defines the model's feature columns, which specify
+  # the data type for the features in the data set. All the feature data is
+  # continuous, so tf.feature_column.numeric_column is the appropriate function
+  # to use to construct the feature columns. There are four features in the
+  # data set (sepal width, sepal height, petal width, and petal height), so accordingly shape must be set to [4] to hold all the data.
 
   # Train model.
   classifier.train(input_fn=train_input_fn, steps=10000)
