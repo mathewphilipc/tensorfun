@@ -1,5 +1,3 @@
-# Adapted from:
-# https://www.tensorflow.org/get_started/estimator
 # Some documentation:
 # https://www.tensorflow.org/api_docs/python/tf/feature_column/numeric_column
 
