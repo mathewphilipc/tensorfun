@@ -5,12 +5,14 @@
 import numpy as np
 import tensorflow as tf
 import os
+import shutil
 
 # Shut off some annoying warning messages
 # (Not as ominous as it sounds)
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-BOOL_TRAINING = "boolData.csv"
+BOOL_TRAINING = "boolTrainData.csv"
+BOOL_TESTING = "boolTestData.csv"
 
 # important note, observed from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/base.py
 # about how load_csv_from_header works: In the top row, entry 1 (i.e., header[0])
@@ -19,6 +21,9 @@ BOOL_TRAINING = "boolData.csv"
 
 print("Let's learn boolean algebra")
 def main():
+
+	# As a test, remove file
+	# os.rmdir("FolderToDelete")
 
 	# Load datasets
 
@@ -55,6 +60,7 @@ def main():
 	# and stored it in the project directory (TensorFun)
 	# Maybe there's a code way to delete it from in here?
 	# Look into this tomorrow
+	# Update: looked into it, super easy and done
 
 	print("...\nDefined classifier")
 
@@ -70,7 +76,7 @@ def main():
 
 	#Train mode
 
-	steps=1
+	steps=100
 
 	classifier.train(input_fn=train_input_fn, steps=steps)
 
@@ -107,3 +113,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # os.remove("FileToRemove.csv")
+    shutil.rmtree("bool_model", ignore_errors=False, onerror=None)
