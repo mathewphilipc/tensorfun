@@ -11,8 +11,10 @@ import shutil
 # (Not as ominous as it sounds)
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-BOOL_TRAINING = "boolTrainData.csv"
-BOOL_TESTING = "boolTestData.csv"
+BOOL_TRAINING = "deeperBoolTrainData.csv"
+BOOL_TESTING = "deeperBoolTestData.csv"
+# For excel fiddling:
+# =MAX(MOD(A2+B2,2)*C2,D2*E2)
 
 # important note, observed from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/base.py
 # about how load_csv_from_header works: In the top row, entry 1 (i.e., header[0])
@@ -42,17 +44,17 @@ def main():
 	print("...\nTest data imported successfully")
 
 	# Each data point has seven real-valued input variables
-	# Rule to learn: (x1,...x7) -> (x1 XOR x2) && x3
+	# Rule to learn: (x1,...x10) -> ((x1 XOR x2) && x3) || (x4 && x5)
 
-	feature_columns = [tf.feature_column.numeric_column("x", shape=[7])]
+	feature_columns = [tf.feature_column.numeric_column("x", shape=[10])]
 	print("...\nDefined feature columns")
 
 	# Build 3 layer DNN with [10,20,10] units respectively
 
 	classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
-		hidden_units=[10,10],
+		hidden_units=[2],
 		n_classes=2,
-		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deepBool/bool_model")
+		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deeperBool/bool_model")
 
 	# Note that model_dir is persistent after training
 	# In order to re-run training with, e.g., different hidden unit numbers,
@@ -76,7 +78,7 @@ def main():
 
 	#Train mode
 
-	steps=10000
+	steps=3000
 
 	classifier.train(input_fn=train_input_fn, steps=steps)
 
