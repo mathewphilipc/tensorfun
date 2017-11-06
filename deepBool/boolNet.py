@@ -36,7 +36,7 @@ def main():
 	# For simplicity we'll use the same set for testing at the moment
 
 	test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-	filename=BOOL_TRAINING,
+	filename=BOOL_TESTING,
 	target_dtype=np.int,
 	features_dtype=np.float32)
 	print("...\nTest data imported successfully")
@@ -76,7 +76,7 @@ def main():
 
 	#Train mode
 
-	steps=100
+	steps=2000
 
 	classifier.train(input_fn=train_input_fn, steps=steps)
 
