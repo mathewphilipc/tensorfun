@@ -77,7 +77,7 @@ def main():
 	#Train mode
 
 	steps=1000
-	multiplier = 1000
+	multiplier = 100
 
 	for i in range(multiplier):
 		progress = ((i+1.0)/multiplier)*100
@@ -118,4 +118,4 @@ def main():
 if __name__ == "__main__":
     main()
     # os.remove("FileToRemove.csv")
-    shutil.rmtree("bool_model", ignore_errors=False, onerror=None)
+    # shutil.rmtree("bool_model", ignore_errors=False, onerror=None)
