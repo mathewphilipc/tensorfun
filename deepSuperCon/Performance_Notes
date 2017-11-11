@@ -30,6 +30,16 @@ Same but retaining bool_model:
 90k => 81.1137%
 100k => 80.7360%
 200k => 82.0702%
+300k => 81.6864%
+400k => 83.2216%
+*interruption, harmless I think*
+500k => 83.2155%
+600k => 83.2887%
+700k => 83.8248%
+800k => 83.7151%
+900k => 83.7760%
+1000k => 
+
 
 Overall performance versus steps:
 

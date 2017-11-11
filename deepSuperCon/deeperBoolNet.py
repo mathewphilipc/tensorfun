@@ -11,8 +11,8 @@ import shutil
 # (Not as ominous as it sounds)
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-BOOL_TRAINING = "formattedFullChemData.csv"
-BOOL_TESTING = "formattedFullChemData.csv"
+SUPERCON_TRAINING = "formattedFullChemData.csv"
+SUPERCON_TESTING = "formattedFullChemData.csv"
 
 # important note, observed from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/base.py
 # about how load_csv_from_header works: In the top row, entry 1 (i.e., header[0])
@@ -25,7 +25,7 @@ def main():
 	# Load datasets
 
 	training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-	filename=BOOL_TRAINING,
+	filename=SUPERCON_TRAINING,
 	target_dtype=np.int,
 	features_dtype=np.float32)
 	print("...\nTraining data imported succesfully")
@@ -35,7 +35,7 @@ def main():
 	# avoid memorizing
 
 	test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-	filename=BOOL_TESTING,
+	filename=SUPERCON_TESTING,
 	target_dtype=np.int,
 	features_dtype=np.float32)
 	print("...\nTest data imported successfully")
@@ -52,7 +52,7 @@ def main():
 	classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
 		hidden_units=[50,20,10],
 		n_classes=2,
-		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deepSuperCon/bool_model")
+		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deepSuperCon/supercon_model")
 
 	# Note that model_dir is persistent after training
 	# In order to re-run training with, e.g., different hidden unit numbers,
@@ -118,4 +118,4 @@ def main():
 if __name__ == "__main__":
     main()
     # os.remove("FileToRemove.csv")
-    # shutil.rmtree("bool_model", ignore_errors=False, onerror=None)
+    # shutil.rmtree("supercon_model", ignore_errors=False, onerror=None)
