@@ -11,21 +11,16 @@ import shutil
 # (Not as ominous as it sounds)
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-BOOL_TRAINING = "deeperBoolTrainData.csv"
-BOOL_TESTING = "deeperBoolTestData.csv"
-# For excel fiddling:
-# =MAX(MOD(A2+B2,2)*C2,D2*E2)
+BOOL_TRAINING = "formattedFullChemData.csv"
+BOOL_TESTING = "formattedFullChemData.csv"
 
 # important note, observed from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/base.py
 # about how load_csv_from_header works: In the top row, entry 1 (i.e., header[0])
 # gives the number of samples. Entry 2 (i.e., header[1]) gives the number of features
 # Output values are given in last col
 
-print("Let's learn boolean algebra")
+print("Let's learn when something will superconduct")
 def main():
-
-	# As a test, remove file
-	# os.rmdir("FolderToDelete")
 
 	# Load datasets
 
@@ -35,7 +30,9 @@ def main():
 	features_dtype=np.float32)
 	print("...\nTraining data imported succesfully")
 
-	# For simplicity we'll use the same set for testing at the moment
+	# For simplicity we'll use the same set for testing
+	# and just monitor our free parameter count to 
+	# avoid memorizing
 
 	test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
 	filename=BOOL_TESTING,
@@ -44,17 +41,18 @@ def main():
 	print("...\nTest data imported successfully")
 
 	# Each data point has seven real-valued input variables
-	# Rule to learn: (x1,...x10) -> ((x1 XOR x2) && x3) || (x4 && x5)
+	# Note that we have 16414 data points, each with 145 feature inputs
+	# Also note that 75.84% of materials in list superconduct
 
-	feature_columns = [tf.feature_column.numeric_column("x", shape=[10])]
+	feature_columns = [tf.feature_column.numeric_column("x", shape=[145])]
 	print("...\nDefined feature columns")
 
 	# Build 3 layer DNN with [10,20,10] units respectively
 
 	classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
-		hidden_units=[2],
+		hidden_units=[50,20,10],
 		n_classes=2,
-		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deeperBool/bool_model")
+		model_dir="/home/mathew/Desktop/CNAM/TensorFun/deepSuperCon/bool_model")
 
 	# Note that model_dir is persistent after training
 	# In order to re-run training with, e.g., different hidden unit numbers,
@@ -78,11 +76,15 @@ def main():
 
 	#Train mode
 
-	steps=3000
+	steps=1000
+	multiplier = 100
 
-	classifier.train(input_fn=train_input_fn, steps=steps)
+	for i in range(multiplier):
+		progress = ((i+1.0)/multiplier)*100
+		classifier.train(input_fn=train_input_fn, steps=steps)
+		print("...\nTrained {} steps ({}% complete)".format(steps,progress))
 
-	print("...\nModel trained for {} steps".format(steps))
+	print("...\nModel trained for {} steps".format(steps*multiplier))
 
 	# Define test inputs
 
